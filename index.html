@@ -7,32 +7,48 @@
     <title>বিদ্যুৎ বিল ক্যালকুলেটর | Electricity Bill Calculator</title>
     <!-- html2canvas for image download -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Bengali:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-color: #1e3a8a;
-            --primary-light: #3b82f6;
-            --secondary-color: #0f766e;
-            --accent-color: #b91c1c;
-            --bg-color: #f1f5f9;
-            --card-bg: #ffffff;
-            --border-color: #cbd5e1;
-            --text-main: #1e293b;
+            --primary: #1e3a8a;
+            --primary-dark: #1e3a8a;
+            --primary-light: #dbeafe;
+            --secondary: #0f766e;
+            --secondary-light: #d1fae5;
+            --accent: #b91c1c;
+            --accent-light: #fee2e2;
+            --bg: #f1f5f9;
+            --card: #ffffff;
+            --border: #cbd5e1;
+            --text: #1e293b;
             --text-muted: #64748b;
             --input-bg: #f8fafc;
-            --modal-bg: rgba(0, 0, 0, 0.5);
+            --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+            --shadow-lg: 0 8px 20px -5px rgba(0,0,0,0.1), 0 4px 8px -5px rgba(0,0,0,0.04);
+            --radius: 16px;
+            --radius-sm: 10px;
+            --modal-bg: rgba(15, 23, 42, 0.5);
+            --font: 'Inter', 'Noto Sans Bengali', 'Segoe UI', system-ui, sans-serif;
         }
 
         [data-theme="dark"] {
-            --primary-color: #60a5fa;
-            --primary-light: #93c5fd;
-            --secondary-color: #14b8a6;
-            --accent-color: #f87171;
-            --bg-color: #0f172a;
-            --card-bg: #1e293b;
-            --border-color: #334155;
-            --text-main: #f8fafc;
+            --primary: #60a5fa;
+            --primary-dark: #3b82f6;
+            --primary-light: #1e3a5f;
+            --secondary: #14b8a6;
+            --secondary-light: #064e3b;
+            --accent: #f87171;
+            --accent-light: #7f1d1d;
+            --bg: #0f172a;
+            --card: #1e293b;
+            --border: #334155;
+            --text: #f8fafc;
             --text-muted: #94a3b8;
             --input-bg: #334155;
+            --shadow: 0 1px 3px rgba(0,0,0,0.2);
+            --shadow-lg: 0 8px 20px -5px rgba(0,0,0,0.3);
             --modal-bg: rgba(0, 0, 0, 0.75);
         }
 
@@ -40,14 +56,13 @@
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Arial, sans-serif;
-            transition: background-color 0.3s, color 0.3s;
+            font-family: var(--font);
         }
 
         body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            padding: 20px;
+            background: var(--bg);
+            color: var(--text);
+            padding: 16px;
             display: flex;
             justify-content: center;
             align-items: flex-start;
@@ -56,164 +71,260 @@
 
         .main-wrapper {
             width: 100%;
-            max-width: 800px;
+            max-width: 720px;
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 16px;
         }
 
         .top-bar {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            flex-wrap: wrap;
-            gap: 10px;
+            gap: 8px;
+            padding: 4px 0;
         }
 
         .controls-group {
             display: flex;
-            gap: 8px;
+            gap: 6px;
+        }
+
+        .pill-btn {
+            background: var(--card);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 10px 18px;
+            border-radius: 100px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 13px;
+            font-family: var(--font);
+            transition: all 0.2s;
+            box-shadow: var(--shadow);
+        }
+        .pill-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-lg);
+        }
+        .pill-btn:active {
+            transform: translateY(0);
         }
 
         .card {
-            background: var(--card-bg);
-            border-radius: 12px;
-            padding: 24px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-            border: 1px solid var(--border-color);
+            background: var(--card);
+            border-radius: var(--radius);
+            padding: 20px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            transition: box-shadow 0.3s;
         }
 
         .header-title {
             text-align: center;
-            color: var(--primary-color);
-            font-size: 24px;
-            font-weight: 700;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid var(--border-color);
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: -0.3px;
+            color: var(--primary);
+            margin-bottom: 18px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--border);
         }
 
         .form-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 16px;
-            margin-bottom: 20px;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            margin-bottom: 18px;
+        }
+
+        @media (max-width: 500px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+            body {
+                padding: 10px;
+            }
+            .card {
+                padding: 16px;
+                border-radius: 14px;
+            }
+            .header-title {
+                font-size: 19px;
+            }
         }
 
         .input-group {
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            gap: 5px;
         }
 
         label {
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 600;
-            color: var(--text-main);
+            color: var(--text-muted);
+            letter-spacing: 0.2px;
         }
 
         input {
             width: 100%;
-            padding: 10px 12px;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            font-size: 15px;
+            padding: 12px 14px;
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-size: 16px;
+            font-weight: 500;
             outline: none;
-            background-color: var(--input-bg);
-            color: var(--text-main);
+            background: var(--input-bg);
+            color: var(--text);
+            font-family: var(--font);
+            transition: border-color 0.2s, box-shadow 0.2s;
+            -webkit-appearance: none;
+        }
+
+        input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-light);
         }
 
         input:disabled {
-            opacity: 0.6;
+            opacity: 0.5;
             cursor: not-allowed;
+        }
+
+        select {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-size: 16px;
+            font-weight: 500;
+            outline: none;
+            background: var(--input-bg);
+            color: var(--text);
+            font-family: var(--font);
+            transition: border-color 0.2s, box-shadow 0.2s;
+            -webkit-appearance: none;
+            appearance: none;
+            cursor: pointer;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2364748b' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            padding-right: 36px;
+        }
+        select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-light);
         }
 
         .demand-input-wrapper {
             display: flex;
-            gap: 8px;
+            gap: 6px;
         }
-
-        .btn {
-            padding: 10px 16px;
-            border: none;
-            border-radius: 6px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: opacity 0.2s;
-        }
-
-        .btn:hover {
-            opacity: 0.9;
-        }
-
-        .btn-primary {
-            background-color: var(--primary-color);
-            color: white;
-            width: 100%;
-            font-size: 16px;
-            font-weight: 700;
-            padding: 12px;
-        }
-
-        .btn-secondary {
-            background-color: #64748b;
-            color: white;
-        }
-
-        .btn-action {
-            background-color: var(--card-bg);
-            color: var(--text-main);
-            border: 1px solid var(--border-color);
+        .demand-input-wrapper input {
             flex: 1;
         }
 
-        .pill-btn {
-            background-color: var(--card-bg);
-            border: 1px solid var(--border-color);
-            color: var(--text-main);
-            padding: 8px 14px;
-            border-radius: 20px;
-            cursor: pointer;
+        .btn {
+            padding: 12px 18px;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-size: 14px;
             font-weight: 600;
+            cursor: pointer;
+            font-family: var(--font);
+            transition: all 0.2s;
+        }
+        .btn:active {
+            transform: scale(0.97);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            width: 100%;
+            font-size: 17px;
+            font-weight: 700;
+            padding: 14px;
+            border-radius: var(--radius-sm);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        }
+        .btn-primary:hover {
+            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+            transform: translateY(-1px);
+        }
+        .btn-primary:active {
+            transform: translateY(0) scale(0.98);
+        }
+
+        .btn-secondary {
+            background: var(--text-muted);
+            color: white;
+        }
+        .btn-secondary:hover {
+            opacity: 0.9;
+        }
+
+        .btn-action {
+            background: var(--card);
+            color: var(--text);
+            border: 1.5px solid var(--border);
+            flex: 1;
             font-size: 13px;
+            padding: 12px 10px;
+            border-radius: var(--radius-sm);
+        }
+        .btn-action:hover {
+            border-color: var(--primary);
+            color: var(--primary);
         }
 
         .action-bar {
             display: flex;
-            gap: 12px;
-            margin-top: 15px;
+            gap: 10px;
+            margin-top: 16px;
             flex-wrap: wrap;
         }
 
-        /* Tariff Table */
         .tariff-table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 10px;
             font-size: 13px;
+            border-radius: 8px;
+            overflow: hidden;
         }
 
         .tariff-table th,
         .tariff-table td {
-            border: 1px solid var(--border-color);
-            padding: 8px;
+            padding: 10px 12px;
             text-align: left;
+            border-bottom: 1px solid var(--border);
         }
 
         .tariff-table th {
-            background-color: var(--input-bg);
-            color: var(--text-main);
+            background: var(--primary-light);
+            color: var(--text);
+            font-weight: 700;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
-        /* Comparison Chart Styles at the Bottom */
+        .tariff-table tr:last-child td {
+            border-bottom: none;
+        }
+        .tariff-table tr:hover td {
+            background: var(--input-bg);
+        }
+
         .comparison-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 12px;
-            margin-top: 20px;
-            padding-top: 15px;
-            border-top: 2px solid var(--border-color);
+            margin-top: 18px;
+            padding-top: 16px;
+            border-top: 2px solid var(--border);
         }
 
         @media (max-width: 500px) {
@@ -223,60 +334,108 @@
         }
 
         .comp-card {
-            border: 1px solid var(--border-color);
-            padding: 14px;
-            border-radius: 8px;
+            padding: 16px;
+            border-radius: var(--radius-sm);
             text-align: center;
-            background-color: var(--input-bg);
+            background: var(--input-bg);
+            border: 1.5px solid var(--border);
         }
 
         .comp-card.new-rate {
-            border-color: var(--primary-color);
+            border-color: var(--primary);
+            background: var(--primary-light);
         }
 
         .comp-price {
-            font-size: 20px;
-            font-weight: 700;
+            font-size: 24px;
+            font-weight: 800;
             margin-top: 6px;
+            letter-spacing: -0.5px;
         }
 
         .diff-tag {
-            font-size: 12px;
-            font-weight: 600;
-            margin-top: 4px;
-            color: var(--accent-color);
+            font-size: 13px;
+            font-weight: 700;
+            margin-top: 6px;
+            color: var(--accent);
+            padding: 4px 10px;
+            border-radius: 100px;
+            display: inline-block;
         }
 
         .section-box {
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-sm);
             padding: 16px;
-            margin-bottom: 16px;
+            margin-bottom: 14px;
+            background: var(--card);
         }
 
         .section-box.kids {
-            border-left: 4px solid var(--secondary-color);
+            border-left: 4px solid var(--secondary);
         }
 
         .section-box.official {
-            border-left: 4px solid var(--primary-color);
+            border-left: 4px solid var(--primary);
+        }
+
+        .collapse-btn {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            padding: 14px 16px;
+            background: var(--input-bg);
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-sm);
+            color: var(--text);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: var(--font);
+            transition: all 0.2s;
+            margin-bottom: 8px;
+        }
+        .collapse-btn:hover {
+            border-color: var(--primary);
+            background: var(--primary-light);
+        }
+        .collapse-btn:active {
+            transform: scale(0.98);
+        }
+        .collapsible {
+            display: none;
+        }
+        .collapsible.open {
+            display: block;
+            animation: slideDown 0.25s ease;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .collapse-icon {
+            font-size: 12px;
+            transition: transform 0.2s;
         }
 
         .section-title {
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 700;
-            margin-bottom: 12px;
-            color: var(--text-main);
-            padding-bottom: 6px;
-            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 10px;
+            color: var(--text);
+            padding-bottom: 8px;
+            border-bottom: 1.5px solid var(--border);
         }
 
         .row {
             display: flex;
             justify-content: space-between;
-            padding: 6px 0;
+            padding: 8px 0;
             font-size: 14px;
-            border-bottom: 1px dashed var(--border-color);
+            border-bottom: 1px dashed var(--border);
         }
 
         .row:last-child {
@@ -286,14 +445,13 @@
         .total-row {
             font-size: 16px;
             font-weight: 700;
-            color: var(--accent-color);
-            border-top: 2px solid var(--text-main);
+            color: var(--accent);
+            border-top: 2px solid var(--text);
             border-bottom: none;
-            margin-top: 8px;
-            padding-top: 8px;
+            margin-top: 10px;
+            padding-top: 10px;
         }
 
-        /* Modal Styles */
         .modal {
             display: none;
             position: fixed;
@@ -305,18 +463,26 @@
             justify-content: center;
             align-items: center;
             z-index: 1000;
-            padding: 15px;
+            padding: 16px;
+            backdrop-filter: blur(4px);
         }
 
         .modal-content {
-            background: var(--card-bg);
-            border-radius: 12px;
+            background: var(--card);
+            border-radius: var(--radius);
             padding: 24px;
             width: 100%;
-            max-width: 500px;
-            border: 1px solid var(--border-color);
-            max-height: 90vh;
+            max-width: 480px;
+            border: 1px solid var(--border);
+            max-height: 85vh;
             overflow-y: auto;
+            box-shadow: var(--shadow-lg);
+            animation: modalIn 0.2s ease;
+        }
+
+        @keyframes modalIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
         }
 
         .modal-header {
@@ -324,41 +490,71 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 16px;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 8px;
+            border-bottom: 1.5px solid var(--border);
+            padding-bottom: 10px;
         }
 
         .close-btn {
             background: none;
             border: none;
-            font-size: 20px;
+            font-size: 24px;
             cursor: pointer;
-            color: var(--text-main);
+            color: var(--text-muted);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+        .close-btn:hover {
+            background: var(--input-bg);
         }
 
-        /* Print styling */
+        #customerSummary {
+            background: linear-gradient(135deg, var(--primary-light), var(--card));
+            padding: 14px 16px;
+            border-radius: var(--radius-sm);
+            margin-bottom: 16px;
+            border: 1.5px solid var(--primary);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            font-size: 14px;
+        }
+        #customerSummary > div {
+            flex: 1;
+            min-width: 120px;
+        }
+
         @media print {
             body {
-                background-color: white;
+                background: white;
                 color: black;
                 padding: 0;
             }
-
             .main-wrapper {
                 max-width: 100%;
             }
-
             .top-bar,
             .input-card,
             .action-bar,
-            .tariff-card {
+            #tariffToggleBtn,
+            #officialToggleBtn {
                 display: none !important;
             }
-
+            #tariffChartBody,
+            #officialBreakdownBody {
+                display: block !important;
+            }
             .card {
                 box-shadow: none;
                 border: none;
-                padding: 0;
+                padding: 4px 0;
+            }
+            .modal {
+                display: none !important;
             }
         }
     </style>
@@ -372,25 +568,8 @@
                 <button class="pill-btn" onclick="toggleTheme()" id="themeBtn">Dark Mode</button>
                 <button class="pill-btn" onclick="toggleLanguage()" id="langBtn">EN</button>
             </div>
-            <button class="btn btn-secondary" onclick="openLoginModal()" style="font-size: 13px;"
+            <button class="pill-btn" onclick="openLoginModal()"
                 id="updateTariffBtn">ট্যারিফ আপডেট করুন</button>
-        </div>
-
-        <!-- Tariff Reference Chart -->
-        <div class="card tariff-card">
-            <h3 class="section-title" id="tariffChartTitle">বিদ্যুৎ ট্যারিফ রেট চার্ট (টাকা/ইউনিট)</h3>
-            <table class="tariff-table">
-                <thead>
-                    <tr>
-                        <th id="thSlab">ধাপ / ইউনিট সীমা</th>
-                        <th id="thOldRate">পুরানো রেট</th>
-                        <th id="thNewRate">নতুন রেট</th>
-                    </tr>
-                </thead>
-                <tbody id="tariffTableBody">
-                    <!-- Populated dynamically -->
-                </tbody>
-            </table>
         </div>
 
         <div class="card input-card">
@@ -410,12 +589,18 @@
                     <input type="number" id="units" value="185" min="0">
                 </div>
                 <div class="input-group">
+                    <label for="load" id="lblLoad">লোড (কিলোওয়াট):</label>
+                    <select id="load" onchange="onLoadChange()">
+                        <option value="2" id="load2">২ কিলোওয়াট</option>
+                        <option value="3" id="load3">৩ কিলোওয়াট</option>
+                        <option value="other" id="loadOther">অন্যান্য</option>
+                    </select>
+                    <input type="number" id="customLoad" min="0" step="0.1" value="4"
+                        style="display:none; margin-top:8px;" oninput="updateDemandCharge()" placeholder="কাস্টম লোড (কিলোওয়াট)">
+                </div>
+                <div class="input-group">
                     <label for="demand" id="lblDemand">ডিমান্ড চার্জ (টাকা):</label>
-                    <div class="demand-input-wrapper">
-                        <input type="number" id="demand" value="252.00" disabled step="0.01">
-                        <button type="button" class="btn btn-secondary" id="toggleDemandBtn"
-                            onclick="toggleDemandEdit()" style="white-space:nowrap;">পরিবর্তন</button>
-                    </div>
+                    <input type="text" id="demand" value="84.00" disabled>
                 </div>
             </div>
 
@@ -426,8 +611,7 @@
             <div id="printableArea">
                 <h2 class="header-title" style="margin-bottom: 15px;" id="billSummaryTitle">বিদ্যুৎ বিল বিবরণী</h2>
 
-                <div class="row" id="customerSummary"
-                    style="background-color: var(--input-bg); padding: 12px; border-radius: 6px; margin-bottom: 16px; border: 1px solid var(--border-color);">
+                <div id="customerSummary">
                     <!-- Populated dynamically -->
                 </div>
 
@@ -441,17 +625,18 @@
                         <div style="font-size: 13px; color: var(--text-muted);" id="lblOldTariffTitle">পুরানো ট্যারিফ
                             বিল (পূর্বের হার)</div>
                         <div class="comp-price" id="oldTotalText">৳1510.00</div>
-                        <button class="btn btn-secondary" onclick="openOldBreakdownModal()"
-                            style="font-size: 11px; margin-top: 8px; padding: 4px 8px;" id="btnOldBreakdown">পুরানো
+                        <button class="pill-btn" onclick="openOldBreakdownModal()"
+                            style="font-size: 12px; margin-top: 8px; padding: 6px 14px;" id="btnOldBreakdown">পুরানো
                             ট্যারিফ ব্রেকডাউন</button>
                     </div>
                     <div class="comp-card new-rate">
                         <div style="font-size: 13px; color: var(--text-muted);" id="lblNewTariffTitle">বর্তমান ট্যারিফ
                             বিল (নতুন হার)</div>
-                        <div class="comp-price" id="newTotalText" style="color: var(--primary-color);">৳1661.00</div>
+                        <div class="comp-price" id="newTotalText" style="color: var(--primary);">৳1661.00</div>
                         <div class="diff-tag" id="diffText">+৳151.00 বৃদ্ধি পেয়েছে</div>
                     </div>
                 </div>
+
             </div>
 
             <div class="action-bar">
@@ -518,17 +703,19 @@
             bn: {
                 appTitle: "বিদ্যুৎ বিল ক্যালকুলেটর",
                 updateTariffBtn: "ট্যারিফ আপডেট করুন",
-                tariffChartTitle: "বিদ্যুৎ ট্যারিফ রেট চার্ট (টাকা/ইউনিট)",
+                tariffChartTitle: "📊 বিদ্যুৎ ট্যারিফ রেট চার্ট (টাকা/ইউনিট)",
                 thSlab: "ধাপ / ইউনিট সীমা",
                 thOldRate: "পুরানো রেট",
                 thNewRate: "নতুন রেট",
                 lblFlatNo: "ফ্ল্যাট নম্বর:",
                 lblCustName: "গ্রাহকের নাম:",
                 lblUnits: "মোট ব্যবহৃত ইউনিট (kWh):",
+                lblLoad: "লোড (কিলোওয়াট):",
                 lblDemand: "ডিমান্ড চার্জ (টাকা):",
+                load2: "২ কিলোওয়াট",
+                load3: "৩ কিলোওয়াট",
+                loadOther: "অন্যান্য",
                 btnCalculate: "বিল হিসাব করুন",
-                toggleDemandBtnChange: "পরিবর্তন",
-                toggleDemandBtnLock: "লক করুন",
                 billSummaryTitle: "বিদ্যুৎ বিল বিবরণী",
                 lblOldTariffTitle: "পুরানো ট্যারিফ বিল (পূর্বের হার)",
                 btnOldBreakdown: "পুরানো ট্যারিফ ব্রেকডাউন",
@@ -553,22 +740,27 @@
                 vatText: "সরকারের ভ্যাট (৫%):",
                 totalPayable: "সর্বমোট পরিশোধযোগ্য টাকা:",
                 totalToPay: "মোট দিতে হবে:",
-                notSpecified: "উল্লেখিত নয়"
+                notSpecified: "উল্লেখিত নয়",
+                showOfficial: "অফিশিয়াল বিলের বিবরণী দেখুন",
+                hideOfficial: "অফিশিয়াল বিলের বিবরণী লুকান",
+                showTariff: "📊 ট্যারিফ রেট চার্ট দেখুন",
+                hideTariff: "📊 ট্যারিফ রেট চার্ট লুকান"
             },
             en: {
                 appTitle: "Electricity Bill Calculator",
                 updateTariffBtn: "Update Tariff",
-                tariffChartTitle: "Electricity Tariff Rate Chart (Tk/kWh)",
+                tariffChartTitle: "📊 Electricity Tariff Rate Chart (Tk/kWh)",
                 thSlab: "Step / Unit Range",
                 thOldRate: "Old Rate",
                 thNewRate: "New Rate",
                 lblFlatNo: "Flat No:",
                 lblCustName: "Customer Name:",
                 lblUnits: "Total Units Used (kWh):",
+                lblLoad: "Load (kW):",
                 lblDemand: "Demand Charge (Tk):",
+                load2: "2 kW",
+                load3: "3 kW",
                 btnCalculate: "Calculate Bill",
-                toggleDemandBtnChange: "Change",
-                toggleDemandBtnLock: "Lock",
                 billSummaryTitle: "Electricity Bill Statement",
                 lblOldTariffTitle: "Old Tariff Bill (Previous Rate)",
                 btnOldBreakdown: "Old Tariff Breakdown",
@@ -593,7 +785,11 @@
                 vatText: "Government VAT (5%):",
                 totalPayable: "Total Payable Amount:",
                 totalToPay: "Total Amount Due:",
-                notSpecified: "Not Specified"
+                notSpecified: "Not Specified",
+                showOfficial: "View Official Bill Statement",
+                hideOfficial: "Hide Official Bill Statement",
+                showTariff: "📊 View Tariff Rate Chart",
+                hideTariff: "📊 Hide Tariff Rate Chart"
             }
         };
 
@@ -621,7 +817,6 @@
             ]
         };
 
-        let isDemandEditable = false;
         let lastOldBreakdownHtml = "";
 
         function toggleTheme() {
@@ -640,47 +835,47 @@
             currentLang = currentLang === 'bn' ? 'en' : 'bn';
             document.getElementById('langBtn').innerText = currentLang === 'bn' ? 'EN' : 'BN';
 
-            // Update Text Nodes
             const langData = i18n[currentLang];
             for (let key in langData) {
                 const el = document.getElementById(key);
                 if (el) el.innerText = langData[key];
             }
 
-            renderTariffTable();
+            const load = document.getElementById('load');
+            if (load.options[0]) load.options[0].text = langData.load2;
+            if (load.options[1]) load.options[1].text = langData.load3;
+            if (load.options[2]) load.options[2].text = langData.loadOther;
+            document.getElementById('customLoad').placeholder = currentLang === 'bn' ? 'কাস্টম লোড (কিলোওয়াট)' : 'Custom Load (kW)';
+
             generateBillOutput();
+            const titleEl = document.getElementById('tariffChartTitle');
+            if (titleEl) titleEl.innerText = i18n[currentLang].tariffChartTitle;
         }
 
-        function renderTariffTable() {
-            let html = "";
-            billConfig.new_slabs.forEach((slab, idx) => {
-                const oldRate = billConfig.old_slabs[idx] ? billConfig.old_slabs[idx].rate : '-';
-                const label = currentLang === 'bn' ? slab.label_bn : slab.label_en;
-                html += `
-                    <tr>
-                        <td>${label}</td>
-                        <td>৳${parseFloat(oldRate).toFixed(2)}</td>
-                        <td><b>৳${parseFloat(slab.rate).toFixed(2)}</b></td>
-                    </tr>
-                `;
-            });
-            document.getElementById('tariffTableBody').innerHTML = html;
-        }
-
-        function toggleDemandEdit() {
-            const demandInput = document.getElementById('demand');
-            const toggleBtn = document.getElementById('toggleDemandBtn');
-            isDemandEditable = !isDemandEditable;
-
-            const t = i18n[currentLang];
-            if (isDemandEditable) {
-                demandInput.disabled = false;
-                demandInput.focus();
-                toggleBtn.innerText = t.toggleDemandBtnLock;
-            } else {
-                demandInput.disabled = true;
-                toggleBtn.innerText = t.toggleDemandBtnChange;
+        function getLoadValue() {
+            const sel = document.getElementById('load');
+            if (sel.value === 'other') {
+                return parseFloat(document.getElementById('customLoad').value) || 0;
             }
+            return parseFloat(sel.value) || 0;
+        }
+
+        function onLoadChange() {
+            const sel = document.getElementById('load');
+            const customInput = document.getElementById('customLoad');
+            if (sel.value === 'other') {
+                customInput.style.display = 'block';
+            } else {
+                customInput.style.display = 'none';
+            }
+            updateDemandCharge();
+        }
+
+        function updateDemandCharge() {
+            const load = getLoadValue();
+            const demand = load * 42;
+            document.getElementById('demand').value = demand.toFixed(2);
+            generateBillOutput();
         }
 
         function calculateSlabs(units, slabs) {
@@ -751,6 +946,8 @@
             lastOldBreakdownHtml += `<div class="row"><span>${t.vatText}</span> <span>৳${oldVat.toFixed(2)}</span></div>`;
             lastOldBreakdownHtml += `<div class="row total-row"><span>${t.lblOldTariffTitle}:</span> <span>৳${oldFinalTotal.toFixed(2)}</span></div>`;
 
+            const loadVal = getLoadValue();
+
             // Build Current Output HTML
             let kidsBreakdownHtml = "";
             let officialBreakdownHtml = "";
@@ -765,7 +962,7 @@
                     <div class="section-title">${t.easyExp}</div>
                     <div style="margin-bottom: 8px;"><b>${units} ${currentLang === 'bn' ? 'ইউনিট এর হিসাব:' : 'Units Calculation:'}</b></div>
                     ${kidsBreakdownHtml}
-                    <div class="row" style="margin-top: 8px;"><span>${t.demandCharge}</span> <span>৳${demandCharge.toFixed(2)}</span></div>
+                    <div class="row" style="margin-top: 8px;"><span>${t.demandCharge} (${loadVal} ${currentLang === 'bn' ? 'কিলোওয়াট' : 'kW'} × ৪২)</span> <span>৳${demandCharge.toFixed(2)}</span></div>
                     <div class="row"><span>${t.vatText}</span> <span>৳${newVat.toFixed(2)}</span></div>
                     <div class="row total-row">
                         <span>${t.totalToPay}</span>
@@ -773,21 +970,52 @@
                     </div>
                 </div>
 
-                <div class="section-box official">
-                    <div class="section-title">${t.officialExp}</div>
-                    <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 8px;">${currentLang === 'bn' ? 'কার্যকরের তারিখ:' : 'Effective Date:'} ${billConfig.effective_date}</div>
-                    <div style="font-weight: 600; margin-bottom: 6px; color: var(--text-muted); font-size: 13px;">${t.unitBreakdown}</div>
-                    ${officialBreakdownHtml}
-                    
-                    <div style="font-weight: 600; margin-top: 12px; margin-bottom: 6px; color: var(--text-muted); font-size: 13px;">${t.totalCharges}</div>
-                    <div class="row"><span>${t.energyValue}</span> <span>৳${newRes.totalCost.toFixed(2)}</span></div>
-                    <div class="row"><span>${t.demandCharge}</span> <span>৳${demandCharge.toFixed(2)}</span></div>
-                    <div class="row"><span>${t.principalBill}</span> <span>৳${newPrincipal.toFixed(2)}</span></div>
-                    <div class="row"><span>${t.vatText}</span> <span>৳${newVat.toFixed(2)}</span></div>
-                    
-                    <div class="row total-row">
-                        <span>${t.totalPayable}</span> 
-                        <span>৳${newFinalTotal.toFixed(2)}</span>
+                <button class="collapse-btn" onclick="toggleTariffChart()" id="tariffToggleBtn">
+                    <span id="tariffChartTitle"></span>
+                    <span class="collapse-icon" id="tariffToggleIcon">▼</span>
+                </button>
+                <div class="collapsible open" id="tariffChartBody">
+                    <div class="section-box" style="margin-bottom: 14px;">
+                        <table class="tariff-table">
+                            <thead>
+                                <tr>
+                                    <th>${currentLang === 'bn' ? 'ধাপ / ইউনিট সীমা' : 'Step / Unit Range'}</th>
+                                    <th>${currentLang === 'bn' ? 'পুরানো রেট' : 'Old Rate'}</th>
+                                    <th>${currentLang === 'bn' ? 'নতুন রেট' : 'New Rate'}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${billConfig.new_slabs.map((slab, idx) => {
+                                    const oldRate = billConfig.old_slabs[idx] ? billConfig.old_slabs[idx].rate : '-';
+                                    const label = currentLang === 'bn' ? slab.label_bn : slab.label_en;
+                                    return `<tr><td>${label}</td><td>৳${parseFloat(oldRate).toFixed(2)}</td><td><b>৳${parseFloat(slab.rate).toFixed(2)}</b></td></tr>`;
+                                }).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <button class="collapse-btn" onclick="toggleOfficialBreakdown()" id="officialToggleBtn">
+                    <span>${t.showOfficial}</span>
+                    <span class="collapse-icon" id="officialToggleIcon">▼</span>
+                </button>
+                <div class="collapsible" id="officialBreakdownBody">
+                    <div class="section-box official">
+                        <div class="section-title">${t.officialExp}</div>
+                        <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 8px;">${currentLang === 'bn' ? 'কার্যকরের তারিখ:' : 'Effective Date:'} ${billConfig.effective_date}</div>
+                        <div style="font-weight: 600; margin-bottom: 6px; color: var(--text-muted); font-size: 13px;">${t.unitBreakdown}</div>
+                        ${officialBreakdownHtml}
+                        
+                        <div style="font-weight: 600; margin-top: 12px; margin-bottom: 6px; color: var(--text-muted); font-size: 13px;">${t.totalCharges}</div>
+                        <div class="row"><span>${t.energyValue}</span> <span>৳${newRes.totalCost.toFixed(2)}</span></div>
+                        <div class="row"><span>${t.demandCharge}</span> <span>৳${demandCharge.toFixed(2)}</span></div>
+                        <div class="row"><span>${t.principalBill}</span> <span>৳${newPrincipal.toFixed(2)}</span></div>
+                        <div class="row"><span>${t.vatText}</span> <span>৳${newVat.toFixed(2)}</span></div>
+                        
+                        <div class="row total-row">
+                            <span>${t.totalPayable}</span> 
+                            <span>৳${newFinalTotal.toFixed(2)}</span>
+                        </div>
                     </div>
                 </div>
             `;
@@ -857,8 +1085,29 @@
 
             closeModal('tariffUpdateModal');
             alert(currentLang === 'bn' ? 'সরকারি নতুন ট্যারিফ রেট সফলভাবে আপগ্রেড করা হয়েছে!' : 'Government tariff rates updated successfully!');
-            renderTariffTable();
             generateBillOutput();
+        }
+
+        function toggleOfficialBreakdown() {
+            const body = document.getElementById('officialBreakdownBody');
+            const icon = document.getElementById('officialToggleIcon');
+            const btn = document.getElementById('officialToggleBtn');
+            const t = i18n[currentLang];
+            body.classList.toggle('open');
+            if (body.classList.contains('open')) {
+                icon.innerText = '▲';
+                btn.firstChild.innerText = t.hideOfficial;
+            } else {
+                icon.innerText = '▼';
+                btn.firstChild.innerText = t.showOfficial;
+            }
+        }
+
+        function toggleTariffChart() {
+            const body = document.getElementById('tariffChartBody');
+            const icon = document.getElementById('tariffToggleIcon');
+            body.classList.toggle('open');
+            icon.innerText = body.classList.contains('open') ? '▲' : '▼';
         }
 
         function printBill() {
@@ -872,15 +1121,15 @@
                 backgroundColor: null
             }).then(canvas => {
                 const link = document.createElement('a');
-                link.download = 'electricity_bill.png';
-                link.href = canvas.toDataURL('image/png');
+                link.download = 'electricity_bill.jpg';
+                link.href = canvas.toDataURL('image/jpeg', 0.95);
                 link.click();
             });
         }
 
         // Initial Run
-        renderTariffTable();
         generateBillOutput();
+        document.getElementById('tariffChartTitle').innerText = i18n.bn.tariffChartTitle;
     </script>
 
 </body>
