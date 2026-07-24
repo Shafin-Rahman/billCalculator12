@@ -1,0 +1,11 @@
+{
+  "vat_percentage": 5.0,
+  "slabs": [
+    { "min": 0, "max": 75, "rate": 5.26 },
+    { "min": 76, "max": 200, "rate": 8.5 },
+    { "min": 201, "max": 300, "rate": 9.1 },
+    { "min": 301, "max": 400, "rate": 9.62 },
+    { "min": 401, "max": 600, "rate": 15.01 },
+    { "min": 601, "max": null, "rate": 17.35 }
+  ]
+}
