@@ -5,6 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>বিদ্যুৎ বিল ক্যালকুলেটর | Electricity Bill Calculator</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="icon" href="icon.svg" type="image/svg+xml">
     <!-- html2canvas for image download -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1130,6 +1134,10 @@
         // Initial Run
         generateBillOutput();
         document.getElementById('tariffChartTitle').innerText = i18n.bn.tariffChartTitle;
+
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js');
+        }
     </script>
 
 </body>
