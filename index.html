@@ -157,6 +157,18 @@
             .header-title {
                 font-size: 19px;
             }
+            .top-bar {
+                flex-wrap: wrap;
+                gap: 6px;
+            }
+            .top-bar .controls-group {
+                flex-wrap: wrap;
+                gap: 4px;
+            }
+            .top-bar .pill-btn {
+                padding: 7px 11px;
+                font-size: 12px;
+            }
         }
 
         .input-group {
@@ -297,6 +309,12 @@
             font-size: 13px;
             border-radius: 8px;
             overflow: hidden;
+        }
+
+        .tariff-table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
         }
 
         .tariff-table th,
@@ -440,6 +458,10 @@
             padding: 8px 0;
             font-size: 14px;
             border-bottom: 1px dashed var(--border);
+            gap: 8px;
+        }
+        .row span {
+            word-break: break-word;
         }
 
         .row:last-child {
@@ -569,11 +591,11 @@
     <div class="main-wrapper">
         <div class="top-bar">
             <div class="controls-group">
-                <button class="pill-btn" onclick="toggleTheme()" id="themeBtn">Dark Mode</button>
-                <button class="pill-btn" onclick="toggleLanguage()" id="langBtn">EN</button>
+                <button class="pill-btn" onclick="toggleTheme()" id="themeBtn"><span id="themeIcon">🌙</span> <span id="themeText">Dark Mode</span></button>
+                <button class="pill-btn" onclick="toggleLanguage()" id="langBtn"><span id="langIcon">🌐</span> <span id="langText">EN</span></button>
+                <button class="pill-btn" onclick="installApp()" id="installBtn" style="display:none"><span id="installIcon">⬇️</span> <span id="installText">Download App</span></button>
             </div>
-            <button class="pill-btn" onclick="openLoginModal()"
-                id="updateTariffBtn">ট্যারিফ আপডেট করুন</button>
+            <button class="pill-btn" onclick="openLoginModal()" id="updateTariffBtn"><span id="updateIcon">⚙️</span> <span id="updateTariffText">অ্যাডমিন লগইন</span></button>
         </div>
 
         <div class="card input-card">
@@ -665,7 +687,7 @@
     <div class="modal" id="loginModal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 id="modalAdminTitle">অ্যাডমিন লগইন</h3>
+                <h3 id="modalAdminTitle">অ্যাডমিন লগইন  (ট্যারিফ আপডেট করুন)</h3>
                 <button class="close-btn" onclick="closeModal('loginModal')">&times;</button>
             </div>
             <div style="display: flex; flex-direction: column; gap: 12px;">
@@ -706,8 +728,8 @@
         const i18n = {
             bn: {
                 appTitle: "বিদ্যুৎ বিল ক্যালকুলেটর",
-                updateTariffBtn: "ট্যারিফ আপডেট করুন",
-                tariffChartTitle: "📊 বিদ্যুৎ ট্যারিফ রেট চার্ট (টাকা/ইউনিট)",
+                updateTariffBtn: "অ্যাডমিন লগইন",
+                tariffChartTitle: "বিদ্যুৎ ট্যারিফ রেট চার্ট (টাকা/ইউনিট)",
                 thSlab: "ধাপ / ইউনিট সীমা",
                 thOldRate: "পুরানো রেট",
                 thNewRate: "নতুন রেট",
@@ -727,7 +749,7 @@
                 btnPrint: "প্রিন্ট করুন",
                 btnDownload: "ছবি হিসেবে সেভ করুন",
                 modalOldTitle: "পুরানো ট্যারিফ এর হিসাব ব্রেকডাউন",
-                modalAdminTitle: "অ্যাডমিন লগইন",
+                modalAdminTitle: "অ্যাডমিন লগইন  (ট্যারিফ আপডেট করুন)",
                 lblAdminUser: "ইউজারনেম:",
                 lblAdminPass: "পাসওয়ার্ড:",
                 btnLogin: "লগইন করুন",
@@ -747,13 +769,14 @@
                 notSpecified: "উল্লেখিত নয়",
                 showOfficial: "অফিশিয়াল বিলের বিবরণী দেখুন",
                 hideOfficial: "অফিশিয়াল বিলের বিবরণী লুকান",
-                showTariff: "📊 ট্যারিফ রেট চার্ট দেখুন",
-                hideTariff: "📊 ট্যারিফ রেট চার্ট লুকান"
+                showTariff: "বিদ্যুৎ ট্যারিফ রেট চার্ট দেখুন",
+                hideTariff: "বিদ্যুৎ ট্যারিফ রেট চার্ট লুকান",
+                installApp: "অ্যাপ ডাউনলোড"
             },
             en: {
                 appTitle: "Electricity Bill Calculator",
                 updateTariffBtn: "Update Tariff",
-                tariffChartTitle: "📊 Electricity Tariff Rate Chart (Tk/kWh)",
+                tariffChartTitle: "Electricity Tariff Rate Chart (Tk/kWh)",
                 thSlab: "Step / Unit Range",
                 thOldRate: "Old Rate",
                 thNewRate: "New Rate",
@@ -792,8 +815,9 @@
                 notSpecified: "Not Specified",
                 showOfficial: "View Official Bill Statement",
                 hideOfficial: "Hide Official Bill Statement",
-                showTariff: "📊 View Tariff Rate Chart",
-                hideTariff: "📊 Hide Tariff Rate Chart"
+                showTariff: "View Tariff Rate Chart",
+                hideTariff: "Hide Tariff Rate Chart",
+                installApp: "Download App"
             }
         };
 
@@ -825,25 +849,34 @@
 
         function toggleTheme() {
             const body = document.body;
-            const themeBtn = document.getElementById('themeBtn');
+            const themeText = document.getElementById('themeText');
+            const themeIcon = document.getElementById('themeIcon');
             if (body.getAttribute('data-theme') === 'dark') {
                 body.removeAttribute('data-theme');
-                themeBtn.innerText = "Dark Mode";
+                themeText.innerText = "Dark Mode";
+                themeIcon.innerText = "🌙";
             } else {
                 body.setAttribute('data-theme', 'dark');
-                themeBtn.innerText = "Light Mode";
+                themeText.innerText = "Light Mode";
+                themeIcon.innerText = "☀️";
             }
         }
 
         function toggleLanguage() {
             currentLang = currentLang === 'bn' ? 'en' : 'bn';
-            document.getElementById('langBtn').innerText = currentLang === 'bn' ? 'EN' : 'BN';
+            document.getElementById('langText').innerText = currentLang === 'bn' ? 'EN' : 'BN';
 
             const langData = i18n[currentLang];
+            const skipKeys = ['updateTariffBtn'];
             for (let key in langData) {
+                if (skipKeys.includes(key)) continue;
                 const el = document.getElementById(key);
                 if (el) el.innerText = langData[key];
             }
+
+            document.getElementById('updateTariffText').innerText = langData.updateTariffBtn;
+            document.getElementById('themeText').innerText = currentLang === 'bn' ? 'ডার্ক মোড' : 'Dark Mode';
+            document.getElementById('installText').innerText = langData.installApp;
 
             const load = document.getElementById('load');
             if (load.options[0]) load.options[0].text = langData.load2;
@@ -852,8 +885,6 @@
             document.getElementById('customLoad').placeholder = currentLang === 'bn' ? 'কাস্টম লোড (কিলোওয়াট)' : 'Custom Load (kW)';
 
             generateBillOutput();
-            const titleEl = document.getElementById('tariffChartTitle');
-            if (titleEl) titleEl.innerText = i18n[currentLang].tariffChartTitle;
         }
 
         function getLoadValue() {
@@ -966,7 +997,7 @@
                     <div class="section-title">${t.easyExp}</div>
                     <div style="margin-bottom: 8px;"><b>${units} ${currentLang === 'bn' ? 'ইউনিট এর হিসাব:' : 'Units Calculation:'}</b></div>
                     ${kidsBreakdownHtml}
-                    <div class="row" style="margin-top: 8px;"><span>${t.demandCharge} (${loadVal} ${currentLang === 'bn' ? 'কিলোওয়াট' : 'kW'} × ৪২)</span> <span>৳${demandCharge.toFixed(2)}</span></div>
+                    <div class="row" style="margin-top: 8px;"><span>${t.demandCharge} (${loadVal} ${currentLang === 'bn' ? 'কিলোওয়াট' : 'kW'} × 42)</span> <span>৳${demandCharge.toFixed(2)}</span></div>
                     <div class="row"><span>${t.vatText}</span> <span>৳${newVat.toFixed(2)}</span></div>
                     <div class="row total-row">
                         <span>${t.totalToPay}</span>
@@ -974,12 +1005,15 @@
                     </div>
                 </div>
 
+                
                 <button class="collapse-btn" onclick="toggleTariffChart()" id="tariffToggleBtn">
-                    <span id="tariffChartTitle"></span>
-                    <span class="collapse-icon" id="tariffToggleIcon">▼</span>
+                    <span id="tariffToggleText">${i18n[currentLang].hideTariff}</span>
+                    <span class="collapse-icon" id="tariffToggleIcon">▲</span>
                 </button>
                 <div class="collapsible open" id="tariffChartBody">
-                    <div class="section-box" style="margin-bottom: 14px;">
+                    <div class="section-box">
+                         <div class="section-title" id="tariffChartTitle">${i18n[currentLang].tariffChartTitle}</div>
+                        <div class="tariff-table-wrapper">
                         <table class="tariff-table">
                             <thead>
                                 <tr>
@@ -996,6 +1030,7 @@
                                 }).join('')}
                             </tbody>
                         </table>
+                        </div>
                     </div>
                 </div>
 
@@ -1006,7 +1041,7 @@
                 <div class="collapsible" id="officialBreakdownBody">
                     <div class="section-box official">
                         <div class="section-title">${t.officialExp}</div>
-                        <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 8px;">${currentLang === 'bn' ? 'কার্যকরের তারিখ:' : 'Effective Date:'} ${billConfig.effective_date}</div>
+                        
                         <div style="font-weight: 600; margin-bottom: 6px; color: var(--text-muted); font-size: 13px;">${t.unitBreakdown}</div>
                         ${officialBreakdownHtml}
                         
@@ -1042,11 +1077,16 @@
             document.getElementById(id).style.display = 'none';
         }
 
+        function isPalindrome(str) {
+            const cleaned = str.toLowerCase().replace(/[^a-z0-9]/g, '');
+            return cleaned === cleaned.split('').reverse().join('') && cleaned.length > 0;
+        }
+
         function handleLogin() {
             const u = document.getElementById('adminUser').value;
             const p = document.getElementById('adminPass').value;
 
-            if (u === 'admin' && p === '1234') {
+            if (u === 'admin' && isPalindrome(p)) {
                 closeModal('loginModal');
                 openTariffUpdateModal();
             } else {
@@ -1110,8 +1150,12 @@
         function toggleTariffChart() {
             const body = document.getElementById('tariffChartBody');
             const icon = document.getElementById('tariffToggleIcon');
+            const text = document.getElementById('tariffToggleText');
+            const t = i18n[currentLang];
             body.classList.toggle('open');
-            icon.innerText = body.classList.contains('open') ? '▲' : '▼';
+            const isOpen = body.classList.contains('open');
+            icon.innerText = isOpen ? '▲' : '▼';
+            text.innerText = isOpen ? t.hideTariff : t.showTariff;
         }
 
         function printBill() {
@@ -1133,7 +1177,19 @@
 
         // Initial Run
         generateBillOutput();
-        document.getElementById('tariffChartTitle').innerText = i18n.bn.tariffChartTitle;
+
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            document.getElementById('installBtn').style.display = '';
+        });
+
+        function installApp() {
+            if (!deferredPrompt) return;
+            deferredPrompt.prompt();
+            deferredPrompt.userChoice.then(() => { deferredPrompt = null; });
+        }
 
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('sw.js');
