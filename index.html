@@ -565,14 +565,8 @@
             }
             .top-bar,
             .input-card,
-            .action-bar,
-            #tariffToggleBtn,
-            #officialToggleBtn {
+            .action-bar {
                 display: none !important;
-            }
-            #tariffChartBody,
-            #officialBreakdownBody {
-                display: block !important;
             }
             .card {
                 box-shadow: none;
@@ -603,20 +597,13 @@
 
             <div class="form-grid">
                 <div class="input-group">
-                    <label for="flat_no" id="lblFlatNo">ফ্ল্যাট নম্বর:</label>
-                    <input type="text" id="flat_no">
-                </div>
-                <div class="input-group">
-                    <label for="customer_name" id="lblCustName">গ্রাহকের নাম:</label>
-                    <input type="text" id="customer_name">
-                </div>
-                <div class="input-group">
                     <label for="units" id="lblUnits">মোট ব্যবহৃত ইউনিট (kWh):</label>
                     <input type="number" id="units" value="" min="0">
                 </div>
                 <div class="input-group">
                     <label for="load" id="lblLoad">লোড (কিলোওয়াট):</label>
                     <select id="load" onchange="onLoadChange()">
+                        <option value="" selected disabled>লোড নির্বাচন করুন</option>
                         <option value="2" id="load2">২ কিলোওয়াট</option>
                         <option value="3" id="load3">৩ কিলোওয়াট</option>
                         <option value="other" id="loadOther">অন্যান্য</option>
@@ -626,7 +613,7 @@
                 </div>
                 <div class="input-group">
                     <label for="demand" id="lblDemand">ডিমান্ড চার্জ (টাকা):</label>
-                    <input type="text" id="demand" value="84.00" disabled>
+                    <input type="text" id="demand" value="" disabled>
                 </div>
             </div>
 
@@ -737,14 +724,13 @@
                 thSlab: "ধাপ / ইউনিট সীমা",
                 thOldRate: "পুরানো রেট",
                 thNewRate: "নতুন রেট",
-                lblFlatNo: "ফ্ল্যাট নম্বর:",
-                lblCustName: "গ্রাহকের নাম:",
                 lblUnits: "মোট ব্যবহৃত ইউনিট (kWh):",
                 lblLoad: "লোড (কিলোওয়াট):",
                 lblDemand: "ডিমান্ড চার্জ (টাকা):",
                 load2: "২ কিলোওয়াট",
                 load3: "৩ কিলোওয়াট",
                 loadOther: "অন্যান্য",
+                loadPlaceholder: "লোড নির্বাচন করুন",
                 btnCalculate: "বিল হিসাব করুন",
                 billSummaryTitle: "বিদ্যুৎ বিল বিবরণী",
                 lblOldTariffTitle: "পুরানো ট্যারিফ বিল (পূর্বের হার)",
@@ -761,20 +747,10 @@
                 lblEffDate: "কার্যকরের তারিখ (Effective Date):",
                 btnSaveTariff: "নতুন রেট সংরক্ষণ করুন",
                 easyExp: "সহজ ব্যাখ্যা",
-                officialExp: "অফিশিয়াল বিলের বিবরণী (বর্তমান ট্যারিফ)",
-                unitBreakdown: "ইউনিট খরচের বিবরণ:",
-                totalCharges: "মোট চার্জ ও ফি:",
-                energyValue: "ব্যবহৃত ইউনিটের মূল মূল্য:",
+                energySubtotal: "মোট (শুধু ইউনিট):",
                 demandCharge: "ডিমান্ড চার্জ:",
-                principalBill: "প্রিন্সিপাল টাকা (মূল বিল):",
                 vatText: "সরকারের ভ্যাট (৫%):",
-                totalPayable: "সর্বমোট পরিশোধযোগ্য টাকা:",
                 totalToPay: "মোট দিতে হবে:",
-                notSpecified: "উল্লেখিত নয়",
-                showOfficial: "অফিশিয়াল বিলের বিবরণী দেখুন",
-                hideOfficial: "অফিশিয়াল বিলের বিবরণী লুকান",
-                showTariff: "বিদ্যুৎ ট্যারিফ রেট চার্ট দেখুন",
-                hideTariff: "বিদ্যুৎ ট্যারিফ রেট চার্ট লুকান",
                 installApp: "অ্যাপ ডাউনলোড"
             },
             en: {
@@ -784,13 +760,12 @@
                 thSlab: "Step / Unit Range",
                 thOldRate: "Old Rate",
                 thNewRate: "New Rate",
-                lblFlatNo: "Flat No:",
-                lblCustName: "Customer Name:",
                 lblUnits: "Total Units Used (kWh):",
                 lblLoad: "Load (kW):",
                 lblDemand: "Demand Charge (Tk):",
                 load2: "2 kW",
                 load3: "3 kW",
+                loadPlaceholder: "Select Load",
                 btnCalculate: "Calculate Bill",
                 billSummaryTitle: "Electricity Bill Statement",
                 lblOldTariffTitle: "Old Tariff Bill (Previous Rate)",
@@ -807,20 +782,10 @@
                 lblEffDate: "Effective Date:",
                 btnSaveTariff: "Save New Rates",
                 easyExp: "Simple Explanation",
-                officialExp: "Official Bill Statement (Current Tariff)",
-                unitBreakdown: "Unit Cost Breakdown:",
-                totalCharges: "Total Charges & Fees:",
-                energyValue: "Energy Charge Value:",
+                energySubtotal: "Energy Subtotal:",
                 demandCharge: "Demand Charge:",
-                principalBill: "Principal Amount:",
                 vatText: "Government VAT (5%):",
-                totalPayable: "Total Payable Amount:",
                 totalToPay: "Total Amount Due:",
-                notSpecified: "Not Specified",
-                showOfficial: "View Official Bill Statement",
-                hideOfficial: "Hide Official Bill Statement",
-                showTariff: "View Tariff Rate Chart",
-                hideTariff: "Hide Tariff Rate Chart",
                 installApp: "Download App"
             }
         };
@@ -835,9 +800,9 @@
                 { "step": 1, "min": 0, "max": 75, "rate": 5.26, "label_bn": "প্রথম ৭৫ ইউনিট", "label_en": "First 75 Units" },
                 { "step": 2, "min": 76, "max": 200, "rate": 7.20, "label_bn": "৭৬ থেকে ২০০ ইউনিট", "label_en": "76 to 200 Units" },
                 { "step": 3, "min": 201, "max": 300, "rate": 7.59, "label_bn": "২০১ থেকে ৩০০ ইউনিট", "label_en": "201 to 300 Units" },
-                { "step": 4, "min": 301, "max": 400, "rate": 9.62, "label_bn": "৩০১ থেকে ৪০০ ইউনিট", "label_en": "301 to 400 Units" },
-                { "step": 5, "min": 401, "max": 600, "rate": 15.01, "label_bn": "৪০১ থেকে ৬০০ ইউনিট", "label_en": "401 to 600 Units" },
-                { "step": 6, "min": 601, "max": null, "rate": 17.35, "label_bn": "৬০০ ইউনিটের উপরে", "label_en": "Above 600 Units" }
+                { "step": 4, "min": 301, "max": 400, "rate": 8.02, "label_bn": "৩০১ থেকে ৪০০ ইউনিট", "label_en": "301 to 400 Units" },
+                { "step": 5, "min": 401, "max": 600, "rate": 12.67, "label_bn": "৪০১ থেকে ৬০০ ইউনিট", "label_en": "401 to 600 Units" },
+                { "step": 6, "min": 601, "max": null, "rate": 14.61, "label_bn": "৬০০ ইউনিটের উপরে", "label_en": "Above 600 Units" }
             ],
             "new_slabs": [
                 { "step": 1, "min": 0, "max": 75, "rate": 5.26, "label_bn": "প্রথম ৭৫ ইউনিট", "label_en": "First 75 Units" },
@@ -883,14 +848,16 @@
             document.getElementById('installText').innerText = langData.installApp;
 
             const load = document.getElementById('load');
-            if (load.options[0]) load.options[0].text = langData.load2;
-            if (load.options[1]) load.options[1].text = langData.load3;
-            if (load.options[2]) load.options[2].text = langData.loadOther;
+            if (load.options[0]) load.options[0].text = langData.loadPlaceholder;
+            if (load.options[1]) load.options[1].text = langData.load2;
+            if (load.options[2]) load.options[2].text = langData.load3;
+            if (load.options[3]) load.options[3].text = langData.loadOther;
             generateBillOutput();
         }
 
         function getLoadValue() {
             const sel = document.getElementById('load');
+            if (!sel.value) return 0;
             if (sel.value === 'other') {
                 return parseFloat(document.getElementById('customLoad').value) || 0;
             }
@@ -900,6 +867,13 @@
         function onLoadChange() {
             const sel = document.getElementById('load');
             const customInput = document.getElementById('customLoad');
+            const demandInput = document.getElementById('demand');
+            if (!sel.value) {
+                customInput.style.display = 'none';
+                demandInput.value = '';
+                generateBillOutput();
+                return;
+            }
             if (sel.value === 'other') {
                 customInput.style.display = 'block';
             } else {
@@ -943,8 +917,6 @@
 
         function generateBillOutput() {
             const t = i18n[currentLang];
-            const flatNo = document.getElementById('flat_no').value.trim() || t.notSpecified;
-            const customerName = document.getElementById('customer_name').value.trim() || t.notSpecified;
             const units = parseFloat(document.getElementById('units').value) || 0;
             const demandCharge = parseFloat(document.getElementById('demand').value) || 0;
 
@@ -962,8 +934,6 @@
 
             // Customer Summary
             document.getElementById('customerSummary').innerHTML = `
-                <div><b>${t.lblCustName}</b> ${customerName}</div>
-                <div><b>${t.lblFlatNo}</b> ${flatNo}</div>
                 <div><b>${t.lblUnits}</b> ${units} kWh</div>
             `;
 
@@ -983,23 +953,26 @@
             lastOldBreakdownHtml += `<div class="row"><span>${t.vatText}</span> <span>৳${oldVat.toFixed(2)}</span></div>`;
             lastOldBreakdownHtml += `<div class="row total-row"><span>${t.lblOldTariffTitle}:</span> <span>৳${oldFinalTotal.toFixed(2)}</span></div>`;
 
-            const loadVal = getLoadValue();
-
             // Build Current Output HTML
             let kidsBreakdownHtml = "";
-            let officialBreakdownHtml = "";
 
             newRes.breakdown.forEach(item => {
                 kidsBreakdownHtml += `<div class="row"><span>${item.label}:</span> <span>${item.units} ${currentLang === 'bn' ? 'ইউনিট' : 'Units'} × ৳${item.rate.toFixed(2)} = <b>৳${item.cost.toFixed(2)}</b></span></div>`;
-                officialBreakdownHtml += `<div class="row"><span>${item.units} ${currentLang === 'bn' ? 'ইউনিট' : 'Units'} @ ৳${item.rate.toFixed(2)}</span> <span>৳${item.cost.toFixed(2)}</span></div>`;
             });
+
+            let demandRowHtml = '';
+            if (demandCharge > 0) {
+                const loadVal = getLoadValue();
+                demandRowHtml = `<div class="row" style="margin-top: 8px;"><span>${t.demandCharge} (${loadVal} ${currentLang === 'bn' ? 'কিলোওয়াট' : 'kW'} × 42)</span> <span>৳${demandCharge.toFixed(2)}</span></div>`;
+            }
 
             const outputHTML = `
                 <div class="section-box kids">
                     <div class="section-title">${t.easyExp}</div>
                     <div style="margin-bottom: 8px;"><b>${units} ${currentLang === 'bn' ? 'ইউনিট এর হিসাব:' : 'Units Calculation:'}</b></div>
                     ${kidsBreakdownHtml}
-                    <div class="row" style="margin-top: 8px;"><span>${t.demandCharge} (${loadVal} ${currentLang === 'bn' ? 'কিলোওয়াট' : 'kW'} × 42)</span> <span>৳${demandCharge.toFixed(2)}</span></div>
+                    <div class="row" style="font-weight:600; border-top:2px solid var(--border); padding-top:10px; margin-top:6px;"><span>${t.energySubtotal}</span> <span>৳${newRes.totalCost.toFixed(2)}</span></div>
+                    ${demandRowHtml}
                     <div class="row"><span>${t.vatText}</span> <span>৳${newVat.toFixed(2)}</span></div>
                     <div class="row total-row">
                         <span>${t.totalToPay}</span>
@@ -1008,14 +981,9 @@
                 </div>
 
                 
-                <button class="collapse-btn" onclick="toggleTariffChart()" id="tariffToggleBtn">
-                    <span id="tariffToggleText">${i18n[currentLang].hideTariff}</span>
-                    <span class="collapse-icon" id="tariffToggleIcon">▲</span>
-                </button>
-                <div class="collapsible open" id="tariffChartBody">
-                    <div class="section-box">
-                         <div class="section-title" id="tariffChartTitle">${i18n[currentLang].tariffChartTitle}</div>
-                        <div class="tariff-table-wrapper">
+                <div class="section-box" style="margin-top:12px;">
+                    <div class="tariff-table-wrapper">
+                        <div class="section-title" id="tariffChartTitle">${i18n[currentLang].tariffChartTitle}</div>
                         <table class="tariff-table">
                             <thead>
                                 <tr>
@@ -1032,31 +1000,6 @@
                                 }).join('')}
                             </tbody>
                         </table>
-                        </div>
-                    </div>
-                </div>
-
-                <button class="collapse-btn" onclick="toggleOfficialBreakdown()" id="officialToggleBtn">
-                    <span>${t.showOfficial}</span>
-                    <span class="collapse-icon" id="officialToggleIcon">▼</span>
-                </button>
-                <div class="collapsible" id="officialBreakdownBody">
-                    <div class="section-box official">
-                        <div class="section-title">${t.officialExp}</div>
-                        
-                        <div style="font-weight: 600; margin-bottom: 6px; color: var(--text-muted); font-size: 13px;">${t.unitBreakdown}</div>
-                        ${officialBreakdownHtml}
-                        
-                        <div style="font-weight: 600; margin-top: 12px; margin-bottom: 6px; color: var(--text-muted); font-size: 13px;">${t.totalCharges}</div>
-                        <div class="row"><span>${t.energyValue}</span> <span>৳${newRes.totalCost.toFixed(2)}</span></div>
-                        <div class="row"><span>${t.demandCharge}</span> <span>৳${demandCharge.toFixed(2)}</span></div>
-                        <div class="row"><span>${t.principalBill}</span> <span>৳${newPrincipal.toFixed(2)}</span></div>
-                        <div class="row"><span>${t.vatText}</span> <span>৳${newVat.toFixed(2)}</span></div>
-                        
-                        <div class="row total-row">
-                            <span>${t.totalPayable}</span> 
-                            <span>৳${newFinalTotal.toFixed(2)}</span>
-                        </div>
                     </div>
                 </div>
             `;
@@ -1132,32 +1075,6 @@
             closeModal('tariffUpdateModal');
             alert(currentLang === 'bn' ? 'সরকারি নতুন ট্যারিফ রেট সফলভাবে আপগ্রেড করা হয়েছে!' : 'Government tariff rates updated successfully!');
             generateBillOutput();
-        }
-
-        function toggleOfficialBreakdown() {
-            const body = document.getElementById('officialBreakdownBody');
-            const icon = document.getElementById('officialToggleIcon');
-            const btn = document.getElementById('officialToggleBtn');
-            const t = i18n[currentLang];
-            body.classList.toggle('open');
-            if (body.classList.contains('open')) {
-                icon.innerText = '▲';
-                btn.firstChild.innerText = t.hideOfficial;
-            } else {
-                icon.innerText = '▼';
-                btn.firstChild.innerText = t.showOfficial;
-            }
-        }
-
-        function toggleTariffChart() {
-            const body = document.getElementById('tariffChartBody');
-            const icon = document.getElementById('tariffToggleIcon');
-            const text = document.getElementById('tariffToggleText');
-            const t = i18n[currentLang];
-            body.classList.toggle('open');
-            const isOpen = body.classList.contains('open');
-            icon.innerText = isOpen ? '▲' : '▼';
-            text.innerText = isOpen ? t.hideTariff : t.showTariff;
         }
 
         function printBill() {
