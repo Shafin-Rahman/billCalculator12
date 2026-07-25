@@ -256,6 +256,23 @@
             transform: scale(0.97);
         }
 
+        .notice-bar {
+            overflow: hidden;
+            white-space: nowrap;
+            padding: 8px 0;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--secondary);
+        }
+        .notice-track {
+            display: inline-block;
+            animation: scrollNotice 18s linear infinite;
+        }
+        @keyframes scrollNotice {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+
         .btn-primary {
             background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             color: white;
@@ -592,6 +609,10 @@
             <button class="pill-btn" onclick="openLoginModal()" id="updateTariffBtn"><span id="updateIcon">⚙️</span> <span id="updateTariffText">অ্যাডমিন লগইন</span></button>
         </div>
 
+        <div class="notice-bar">
+            <div class="notice-track" id="noticeTrack">📢 <span id="noticeText">অ্যাপটি ফোনে ইনস্টল করে অফলাইনে ব্যবহার করতে ⬇️ Download App বাটনে ক্লিক করুন</span></div>
+        </div>
+
         <div class="card input-card">
             <h2 class="header-title" id="appTitle">বিদ্যুৎ বিল ক্যালকুলেটর</h2>
 
@@ -751,7 +772,8 @@
                 demandCharge: "ডিমান্ড চার্জ:",
                 vatText: "সরকারের ভ্যাট (৫%):",
                 totalToPay: "মোট দিতে হবে:",
-                installApp: "অ্যাপ ডাউনলোড"
+                installApp: "অ্যাপ ডাউনলোড",
+                noticeText: "অ্যাপটি ফোনে ইনস্টল করে অফলাইনে ব্যবহার করতে ⬇️ Download App বাটনে ক্লিক করুন"
             },
             en: {
                 appTitle: "Electricity Bill Calculator",
@@ -786,7 +808,8 @@
                 demandCharge: "Demand Charge:",
                 vatText: "Government VAT (5%):",
                 totalToPay: "Total Amount Due:",
-                installApp: "Download App"
+                installApp: "Download App",
+                noticeText: "Install the app on your phone for offline use. Click ⬇️ Download App button"
             }
         };
 
@@ -846,6 +869,7 @@
             document.getElementById('updateTariffText').innerText = langData.updateTariffBtn;
             document.getElementById('themeText').innerText = currentLang === 'bn' ? 'ডার্ক মোড' : 'Dark Mode';
             document.getElementById('installText').innerText = langData.installApp;
+            document.getElementById('noticeText').innerText = langData.noticeText;
 
             const load = document.getElementById('load');
             if (load.options[0]) load.options[0].text = langData.loadPlaceholder;
