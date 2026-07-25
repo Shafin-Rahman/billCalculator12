@@ -593,7 +593,7 @@
             <div class="controls-group">
                 <button class="pill-btn" onclick="toggleTheme()" id="themeBtn"><span id="themeIcon">🌙</span> <span id="themeText">Dark Mode</span></button>
                 <button class="pill-btn" onclick="toggleLanguage()" id="langBtn"><span id="langIcon">🌐</span> <span id="langText">EN</span></button>
-                <button class="pill-btn" onclick="installApp()" id="installBtn" style="display:none"><span id="installIcon">⬇️</span> <span id="installText">Download App</span></button>
+                <button class="pill-btn" onclick="installApp()" id="installBtn"><span id="installIcon">⬇️</span> <span id="installText">Download App</span></button>
             </div>
             <button class="pill-btn" onclick="openLoginModal()" id="updateTariffBtn"><span id="updateIcon">⚙️</span> <span id="updateTariffText">অ্যাডমিন লগইন</span></button>
         </div>
@@ -604,11 +604,11 @@
             <div class="form-grid">
                 <div class="input-group">
                     <label for="flat_no" id="lblFlatNo">ফ্ল্যাট নম্বর:</label>
-                    <input type="text" id="flat_no" placeholder="যেমন: ৪-এ">
+                    <input type="text" id="flat_no">
                 </div>
                 <div class="input-group">
                     <label for="customer_name" id="lblCustName">গ্রাহকের নাম:</label>
-                    <input type="text" id="customer_name" placeholder="যেমন: শাফিন">
+                    <input type="text" id="customer_name">
                 </div>
                 <div class="input-group">
                     <label for="units" id="lblUnits">মোট ব্যবহৃত ইউনিট (kWh):</label>
@@ -622,7 +622,7 @@
                         <option value="other" id="loadOther">অন্যান্য</option>
                     </select>
                     <input type="number" id="customLoad" min="0" step="0.1" value="4"
-                        style="display:none; margin-top:8px;" oninput="updateDemandCharge()" placeholder="কাস্টম লোড (কিলোওয়াট)">
+                        style="display:none; margin-top:8px;" oninput="updateDemandCharge()">
                 </div>
                 <div class="input-group">
                     <label for="demand" id="lblDemand">ডিমান্ড চার্জ (টাকা):</label>
@@ -886,8 +886,6 @@
             if (load.options[0]) load.options[0].text = langData.load2;
             if (load.options[1]) load.options[1].text = langData.load3;
             if (load.options[2]) load.options[2].text = langData.loadOther;
-            document.getElementById('customLoad').placeholder = currentLang === 'bn' ? 'কাস্টম লোড (কিলোওয়াট)' : 'Custom Load (kW)';
-
             generateBillOutput();
         }
 
@@ -1186,13 +1184,15 @@
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
-            document.getElementById('installBtn').style.display = '';
         });
 
         function installApp() {
-            if (!deferredPrompt) return;
-            deferredPrompt.prompt();
-            deferredPrompt.userChoice.then(() => { deferredPrompt = null; });
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then(() => { deferredPrompt = null; });
+            } else {
+                alert(currentLang === 'bn' ? 'আপনার ব্রাউজার থেকে "হোম স্ক্রিনে যোগ করুন" অপশন ব্যবহার করুন।' : 'Use "Add to Home Screen" option from your browser.');
+            }
         }
 
         if ('serviceWorker' in navigator) {
